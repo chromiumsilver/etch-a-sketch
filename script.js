@@ -1,15 +1,32 @@
+const btn = document.querySelector(".btn");
+btn.addEventListener("click", () => {
+  let squarePerSide = prompt("Enter the number of squares per side:");
+  squarePerSide = parseInt(squarePerSide);
+  if (!squarePerSide || squarePerSide > 100) {
+    alert("The number of squares per side should be an integer between 1 and 100.");
+    return;
+  }
+  if (squarePerSide) {
+    clearGrid();
+    createSquares(squarePerSide);
+  }
+});
+
+createSquares(16);
+
 /**
- * Create a num * num grid of squares
+ * Create a grid of squares
  *
- * @param { number } num
- * @param { number } width
+ * @param { number } squarePerSide
  */
-function createSquares(num, width) {
-  const board = document.querySelector(".board");
-  for (let i = 0; i < num; i++) {
-    for (let j = 0; j < num; j++) {
-      const square = createSquare(width);
-      board.appendChild(square);
+function createSquares(squarePerSide) {
+  const grid = document.querySelector(".grid");
+  grid.style.gridTemplateColumns = `repeat(${squarePerSide}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${squarePerSide}, 1fr)`;
+  for (let i = 0; i < squarePerSide; i++) {
+    for (let j = 0; j < squarePerSide; j++) {
+      const square = createSquare();
+      grid.appendChild(square);
     }
   }
 }
@@ -17,15 +34,17 @@ function createSquares(num, width) {
 /**
  * Create a single square div
  *
- * @param { number } width
  */
-function createSquare(width) {
+function createSquare() {
   const square = document.createElement("div");
   square.classList.add("square");
   square.addEventListener("mouseover", () => {
-    square.style.backgroundColor = "black";
+    square.classList.add("square--black");
   });
   return square;
 }
 
-createSquares(16, 50);
+function clearGrid() {
+  const grid = document.querySelector(".grid");
+  grid.innerHTML = "";
+}
