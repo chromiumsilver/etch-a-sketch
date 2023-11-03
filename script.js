@@ -1,32 +1,33 @@
 const DEFAULT_COLOR = "rgb(0, 0, 0)";
 const DEFAULT_BG_COLOR = "rgb(255, 255, 255)";
+const DEFAULT_SQUARES_PER_SIDE = 16;
 const COLOR_MODE = "color";
 const RAINBOW_MODE = "rainbow";
-const GRADIENT_MODE = "gradient";
-const DEFAULT_SQUARES_PER_SIDE = 16;
+const GRADIENT_DARKEN_MODE = "darken";
+const GRADIENT_BRIGHTEN_MODE = "brighten";
 const GRADIENT_STEP = Math.floor(255 * 0.1);
-const GRADIENT_OFF = 0;
-const GRADIENT_DARKEN_MODE = -1;
-const GRADIENT_BRIGHTEN_MODE = 1;
 
 let currentColor = DEFAULT_COLOR;
 let currentBgColor = DEFAULT_BG_COLOR;
 let currentMode = COLOR_MODE;
 let selectedBtn = null;
 let currentSquarePerSide = DEFAULT_SQUARES_PER_SIDE;
-let gradientMode = GRADIENT_OFF;
+let gradientSign = 0;
 
 const btnSize = document.querySelector("#btn-size");
+
 const btnColor = document.querySelector("#btn-color");
 const btnRainbow = document.querySelector("#btn-rainbow");
 const btnDarken = document.querySelector("#btn-darken");
 const btnBrighten = document.querySelector("#btn-brighten");
+
 const btnClear = document.querySelector("#btn-clear");
 
-btnColor.onclick = () => setCurrentMode(COLOR_MODE);
-btnRainbow.onclick = () => setCurrentMode(RAINBOW_MODE);
-btnDarken.onclick = () => setGradientMode(GRADIENT_DARKEN_MODE);
-btnBrighten.onclick = () => setGradientMode(GRADIENT_BRIGHTEN_MODE);
+btnColor.onclick = () => setCurrentMode(COLOR_MODE, btnColor);
+btnRainbow.onclick = () => setCurrentMode(RAINBOW_MODE, btnRainbow);
+btnDarken.onclick = () => setCurrentMode(GRADIENT_DARKEN_MODE, btnDarken);
+btnBrighten.onclick = () => setCurrentMode(GRADIENT_BRIGHTEN_MODE, btnBrighten);
+
 btnClear.onclick = () => setupGrid();
 
 btnSize.addEventListener("click", () => {
@@ -41,44 +42,33 @@ btnSize.addEventListener("click", () => {
   }
 });
 
-setupGrid();
-setCurrentMode(COLOR_MODE);
+init();
 
-function setCurrentMode(mode) {
+function init() {
+  setupGrid();
+  setCurrentMode(COLOR_MODE, btnColor);
+}
+
+function setCurrentMode(mode, clickedBtn) {
   currentMode = mode;
-  activateBtn(mode);
+  if (mode === GRADIENT_DARKEN_MODE) {
+    gradientSign = -1;
+  }
+  if (mode === GRADIENT_BRIGHTEN_MODE) {
+    gradientSign = 1;
+  }
+  activateBtn(clickedBtn);
 }
 
-function setGradientMode(mode) {
-  gradientMode = mode;
-  setCurrentMode(GRADIENT_MODE);
-}
-
-function activateBtn(mode) {
+function activateBtn(button) {
+  if (selectedBtn === button) {
+    return;
+  }
   if (selectedBtn) {
     selectedBtn.classList.remove("btn--active");
   }
-
-  switch (mode) {
-    case COLOR_MODE:
-      selectedBtn = btnColor;
-      btnColor.classList.add("btn--active");
-      break;
-    case RAINBOW_MODE:
-      selectedBtn = btnRainbow;
-      btnRainbow.classList.add("btn--active");
-      break;
-    case GRADIENT_MODE:
-      if (gradientMode === GRADIENT_DARKEN_MODE) {
-        selectedBtn = btnDarken;
-        btnDarken.classList.add("btn--active");
-      } else {
-        selectedBtn = btnBrighten;
-        btnBrighten.classList.add("btn--active");
-      }
-      break;
-  }
-  console.log(selectedBtn);
+  button.classList.add("btn--active");
+  selectedBtn = button;
 }
 
 function createGrid(squarePerSide) {
@@ -124,7 +114,8 @@ function changeSquareBgColor(square) {
     case RAINBOW_MODE:
       squareBgColor = getRandomColor();
       break;
-    case GRADIENT_MODE:
+    case GRADIENT_DARKEN_MODE:
+    case GRADIENT_BRIGHTEN_MODE:
       squareBgColor = adjustColor(squareBgColor);
       break;
     default:
@@ -146,7 +137,7 @@ function adjustColor(color) {
 }
 
 function adjustColorChannel(code) {
-  code = code + GRADIENT_STEP * gradientMode;
+  code = code + GRADIENT_STEP * gradientSign;
   return pickValidColor(code);
 }
 
