@@ -11,9 +11,9 @@ body {
   transition: 0.3s;
 }
 
-.btn:focus {
+/* .btn:focus {
   background-color: #2f48e9;
-}
+} */
 
 .grid {
   border: 0.5px solid black;
@@ -41,4 +41,8 @@ body {
   background-color: rgb(131, 163, 203);
   border: 0;
   border-radius: 80px;
+}
+
+.btn--active {
+  background-color: #2f48e9;
 }

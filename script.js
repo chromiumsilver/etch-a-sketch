@@ -2,6 +2,7 @@ const DEFAULT_COLOR = "rgb(0, 0, 0)";
 const DEFAULT_BG_COLOR = "rgb(255, 255, 255)";
 const COLOR_MODE = "color";
 const RAINBOW_MODE = "rainbow";
+const GRADIENT_MODE = "gradient";
 const DEFAULT_SQUARES_PER_SIDE = 16;
 const GRADIENT_STEP = Math.floor(255 * 0.1);
 const GRADIENT_OFF = 0;
@@ -11,6 +12,7 @@ const GRADIENT_BRIGHTEN_MODE = 1;
 let currentColor = DEFAULT_COLOR;
 let currentBgColor = DEFAULT_BG_COLOR;
 let currentMode = COLOR_MODE;
+let selectedBtn = null;
 let currentSquarePerSide = DEFAULT_SQUARES_PER_SIDE;
 let gradientMode = GRADIENT_OFF;
 
@@ -40,13 +42,43 @@ btnSize.addEventListener("click", () => {
 });
 
 setupGrid();
+setCurrentMode(COLOR_MODE);
 
 function setCurrentMode(mode) {
   currentMode = mode;
+  activateBtn(mode);
 }
 
 function setGradientMode(mode) {
   gradientMode = mode;
+  setCurrentMode(GRADIENT_MODE);
+}
+
+function activateBtn(mode) {
+  if (selectedBtn) {
+    selectedBtn.classList.remove("btn--active");
+  }
+
+  switch (mode) {
+    case COLOR_MODE:
+      selectedBtn = btnColor;
+      btnColor.classList.add("btn--active");
+      break;
+    case RAINBOW_MODE:
+      selectedBtn = btnRainbow;
+      btnRainbow.classList.add("btn--active");
+      break;
+    case GRADIENT_MODE:
+      if (gradientMode === GRADIENT_DARKEN_MODE) {
+        selectedBtn = btnDarken;
+        btnDarken.classList.add("btn--active");
+      } else {
+        selectedBtn = btnBrighten;
+        btnBrighten.classList.add("btn--active");
+      }
+      break;
+  }
+  console.log(selectedBtn);
 }
 
 function createGrid(squarePerSide) {
@@ -88,14 +120,16 @@ function getRandomColor() {
 
 function changeSquareBgColor(square) {
   let squareBgColor = getComputedStyle(square).backgroundColor;
-  if (currentMode === COLOR_MODE) {
-    if (gradientMode) {
+  switch (currentMode) {
+    case RAINBOW_MODE:
+      squareBgColor = getRandomColor();
+      break;
+    case GRADIENT_MODE:
       squareBgColor = adjustColor(squareBgColor);
-    } else {
+      break;
+    default:
       squareBgColor = currentColor;
-    }
-  } else if (currentMode === RAINBOW_MODE) {
-    squareBgColor = getRandomColor();
+      break;
   }
   square.style.backgroundColor = squareBgColor;
 }
