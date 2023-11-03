@@ -8,6 +8,7 @@ const GRADIENT_BRIGHTEN_MODE = "brighten";
 const ERASER_MODE = "eraser";
 const GRADIENT_STEP = Math.floor(255 * 0.1);
 
+let isDrawing = false;
 let currentColor = DEFAULT_COLOR;
 let currentBgColor = DEFAULT_BG_COLOR;
 let currentMode = COLOR_MODE;
@@ -88,7 +89,18 @@ function createSquare() {
   const square = document.createElement("div");
   square.classList.add("square");
   square.style.backgroundColor = currentBgColor;
-  square.addEventListener("mouseover", () => changeSquareBgColor(square));
+  square.addEventListener("mousedown", () => {
+    isDrawing = true;
+    colorSquare(square);
+  });
+  square.addEventListener("mouseover", () => {
+    if (isDrawing) {
+      colorSquare(square);
+    }
+  });
+  square.addEventListener("mouseup", () => {
+    isDrawing = false;
+  });
   return square;
 }
 
@@ -111,7 +123,7 @@ function getRandomColor() {
   return color;
 }
 
-function changeSquareBgColor(square) {
+function colorSquare(square) {
   let squareBgColor = getComputedStyle(square).backgroundColor;
   switch (currentMode) {
     case RAINBOW_MODE:
