@@ -5,6 +5,7 @@ const COLOR_MODE = "color";
 const RAINBOW_MODE = "rainbow";
 const GRADIENT_DARKEN_MODE = "darken";
 const GRADIENT_BRIGHTEN_MODE = "brighten";
+const ERASER_MODE = "eraser";
 const GRADIENT_STEP = Math.floor(255 * 0.1);
 
 let currentColor = DEFAULT_COLOR;
@@ -20,6 +21,7 @@ const btnColor = document.querySelector("#btn-color");
 const btnRainbow = document.querySelector("#btn-rainbow");
 const btnDarken = document.querySelector("#btn-darken");
 const btnBrighten = document.querySelector("#btn-brighten");
+const btnEraser = document.querySelector("#btn-eraser");
 
 const btnClear = document.querySelector("#btn-clear");
 
@@ -27,6 +29,7 @@ btnColor.onclick = () => setCurrentMode(COLOR_MODE, btnColor);
 btnRainbow.onclick = () => setCurrentMode(RAINBOW_MODE, btnRainbow);
 btnDarken.onclick = () => setCurrentMode(GRADIENT_DARKEN_MODE, btnDarken);
 btnBrighten.onclick = () => setCurrentMode(GRADIENT_BRIGHTEN_MODE, btnBrighten);
+btnEraser.onclick = () => setCurrentMode(ERASER_MODE, btnEraser);
 
 btnClear.onclick = () => setupGrid();
 
@@ -117,6 +120,9 @@ function changeSquareBgColor(square) {
     case GRADIENT_DARKEN_MODE:
     case GRADIENT_BRIGHTEN_MODE:
       squareBgColor = adjustColor(squareBgColor);
+      break;
+    case ERASER_MODE:
+      squareBgColor = currentBgColor;
       break;
     default:
       squareBgColor = currentColor;
