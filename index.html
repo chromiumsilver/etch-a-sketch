@@ -5,19 +5,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Etch-A-Sketch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-  <button class="btn" id="btn-size">Click to enter the number of squares per side!</button>
-  <button class="btn" id="btn-color">Color</button>
-  <button class="btn" id="btn-rainbow">Rainbow</button>
-  <button class="btn" id="btn-darken">Gradient-Darken</button>
-  <button class="btn" id="btn-brighten">Gradient-Brighten</button>
-  <button class="btn" id="btn-eraser">Eraser</button>
-  <button class="btn" id="btn-clear">Clear</button>
-  <div class="grid"></div>
+  <div class="header">Etch-A-Sketch</div>
+  <div class="content">
+    <div class="menu">
+      <div class="color-picker">
+        <input type="color" id="fill-color" value="#000000">
+        <label for="fill-color">Pen Color</label>
+      </div>
+      <div class="color-picker">
+        <input type="color" id="bg-color" value="#ffffff">
+        <label for="bg-color">Background Color</label>
+      </div>
+      <button class="btn" id="btn-color">Color</button>
+      <button class="btn" id="btn-rainbow">Rainbow</button>
+      <button class="btn" id="btn-darken">Gradient-Darken</button>
+      <button class="btn" id="btn-brighten">Gradient-Brighten</button>
+      <button class="btn" id="btn-eraser">Eraser</button>
+      <button class="btn btn--clear" id="btn-clear">Clear</button>
+    </div>
+    <div class="grid"></div>
+    <div class="menu">
+      <div class="text" id="size-value">16 x 16</div>
+      <input type="range" id="size-slider" value="16" min="1" max="64">
+    </div>
+  </div>
+  <footer class="footer">
+    <p>Copyright © 2023 chromiumsilver</p>
+    <a href="https://github.com/chromiumsilver"><i class="fa fa-github"></i></a>
+  </footer>
 
   <script src="script.js"></script>
 </body>

@@ -16,7 +16,8 @@ let selectedBtn = null;
 let currentSquarePerSide = DEFAULT_SQUARES_PER_SIDE;
 let gradientSign = 0;
 
-const btnSize = document.querySelector("#btn-size");
+const fillColorPicker = document.querySelector("#fill-color");
+const bgColorPicker = document.querySelector("#bg-color");
 
 const btnColor = document.querySelector("#btn-color");
 const btnRainbow = document.querySelector("#btn-rainbow");
@@ -26,6 +27,9 @@ const btnEraser = document.querySelector("#btn-eraser");
 
 const btnClear = document.querySelector("#btn-clear");
 
+const sizeSlider = document.querySelector("#size-slider");
+const sizeValue = document.querySelector("#size-value");
+
 btnColor.onclick = () => setCurrentMode(COLOR_MODE, btnColor);
 btnRainbow.onclick = () => setCurrentMode(RAINBOW_MODE, btnRainbow);
 btnDarken.onclick = () => setCurrentMode(GRADIENT_DARKEN_MODE, btnDarken);
@@ -34,16 +38,19 @@ btnEraser.onclick = () => setCurrentMode(ERASER_MODE, btnEraser);
 
 btnClear.onclick = () => setupGrid();
 
-btnSize.addEventListener("click", () => {
-  let squarePerSide = prompt("Enter the number of squares per side:");
-  currentSquarePerSide = parseInt(squarePerSide);
-  if (!currentSquarePerSide || currentSquarePerSide > 100) {
-    alert("The number of squares per side should be an integer between 1 and 100.");
-    return;
-  }
-  if (currentSquarePerSide) {
-    setupGrid();
-  }
+fillColorPicker.addEventListener("input", (e) => {
+  currentColor = e.target.value;
+});
+
+bgColorPicker.addEventListener("input", (e) => {
+  currentBgColor = e.target.value;
+  setupGrid();
+});
+
+sizeSlider.addEventListener("input", (e) => {
+  currentSquarePerSide = e.target.value;
+  setupGrid();
+  sizeValue.innerHTML = `${currentSquarePerSide} x ${currentSquarePerSide}`;
 });
 
 init();
