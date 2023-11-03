@@ -13,6 +13,7 @@ body {
   font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   margin: 0;
   background-color: var(--primary-light);
+  min-height: 100vh;
 }
 
 .header {
@@ -172,4 +173,5 @@ input[type="range"]::-webkit-slider-thumb {
   color: white;
   font-size: 16px;
   width: 100%;
+  margin-top: auto;
 }
